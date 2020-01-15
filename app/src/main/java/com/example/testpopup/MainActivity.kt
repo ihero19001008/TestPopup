@@ -4,37 +4,43 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.ParsedRequestListener
-import com.example.testpopup.Adapter.PhotoAdapter
 import com.example.testpopup.Adapter.ViewPagerAdapter
 import com.example.testpopup.model.Photo
 import com.example.testpopup.model.PhotoRespone
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 @Suppress("NAME_SHADOWING")
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
     private lateinit var recyclerView: RecyclerView
     var photoList = ArrayList<Photo>()
+    var gDetector: GestureDetectorCompat? = null
     //lateinit var photoAdapter: PhotoAdapter
     lateinit var photoAdapter: ViewPagerAdapter
     private lateinit var viewPager: ViewPager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        this.gDetector = GestureDetectorCompat(this, this)
+        gDetector?.setOnDoubleTapListener(this)
         viewPager = findViewById(R.id.viewPager)
         val toolbar = findViewById<Toolbar>(R.id.toolBar)
         setSupportActionBar(toolbar)
@@ -79,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 //                LinearLayoutManager.VERTICAL,false)
         viewPager.adapter = photoAdapter
 
+
         }
 
    private fun loadLink() {
@@ -99,6 +106,50 @@ class MainActivity : AppCompatActivity() {
 
 
             })
+    }
+    override fun onDown(event: MotionEvent): Boolean {
+        Toast.makeText(this,"Down",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onFling(event1: MotionEvent, event2: MotionEvent,
+                         velocityX: Float, velocityY: Float): Boolean {
+        Toast.makeText(this,"Fling",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onLongPress(event: MotionEvent) {
+        Toast.makeText(this,"LongPress",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onScroll(e1: MotionEvent, e2: MotionEvent,
+                          distanceX: Float, distanceY: Float): Boolean {
+        Toast.makeText(this,"Scroll",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onShowPress(event: MotionEvent) {
+        Toast.makeText(this,"ShowPress",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSingleTapUp(event: MotionEvent): Boolean {
+        Toast.makeText(this,"SingleTapup",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onDoubleTap(event: MotionEvent): Boolean {
+        Toast.makeText(this,"DoubleTap",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onDoubleTapEvent(event: MotionEvent): Boolean {
+        Toast.makeText(this,"DoubleTapEven",Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+    override fun onSingleTapConfirmed(event: MotionEvent): Boolean {
+        Toast.makeText(this,"SingleTapConfirmed",Toast.LENGTH_SHORT).show()
+        return true
     }
 
 }
